@@ -1,0 +1,17 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  local:
+    push: false
+  artifacts:
+    - image: sajednahian/code-execution-server
+      context: code-execution-server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        '**/*.js': .
+deploy:
+  kubectl:
+    manifests:
+      - k8s-dev/code-execution-server-deployment.yaml
+      - k8s-dev/code-execution-server-cluster-ip-service.yaml

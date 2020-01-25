@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-execution-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: code-exeuction-server
+  template:
+    metadata:
+      labels:
+        component: code-exeuction-server
+    spec:
+      containers:
+        - name: code-exeuction-server
+          image: sajednahian/code-execution-server
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGOPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongopassword
+                  key: MONGOPASSWORD
+            - name: MONGODB_HOST
+              value: mongodb-cluster-ip-service
