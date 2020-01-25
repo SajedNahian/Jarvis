@@ -1,10 +1,13 @@
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Server is up');
+const cors = require('cors');
+app.use(cors());
+
+app.get('/status', (req, res) => {
+  res.send('Looks like server is up');
 });
 
 app.listen(5000, () => {
-  console.log('Code Execution Server started on port 5000');
+  console.log('Code Execution Server: Started on port 5000');
 });

@@ -17,11 +17,3 @@ spec:
           image: sajednahian/code-execution-server
           ports:
             - containerPort: 5000
-          env:
-            - name: MONGOPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mongopassword
-                  key: MONGOPASSWORD
-            - name: MONGODB_HOST
-              value: mongodb-cluster-ip-service
