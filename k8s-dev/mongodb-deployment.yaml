@@ -24,13 +24,3 @@ spec:
           volumeMounts:
             - name: mongodb-storage
               mountPath: /data/db
-          env:
-            - name: MONGO_INITDB_DATABASE
-              value: 'main'
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: 'admin'
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mongopassword
-                  key: MONGOPASSWORD
