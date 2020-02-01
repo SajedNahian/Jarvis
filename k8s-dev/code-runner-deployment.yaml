@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: code-runner
+  template:
+    metadata:
+      labels:
+        component: code-runner
+    spec:
+      containers:
+        - name: code-runner
+          image: sajednahian/code-runner
+          ports:
+            - containerPort: 5000

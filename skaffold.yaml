@@ -10,8 +10,16 @@ build:
         dockerfile: Dockerfile.dev
       sync:
         '**/*.js': .
+    - image: sajednahian/code-runner
+      context: code-runner
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        '**/*.js': .
 deploy:
   kubectl:
     manifests:
       - k8s-dev/code-execution-server-deployment.yaml
       - k8s-dev/code-execution-server-cluster-ip-service.yaml
+      - k8s-dev/code-runner-deployment.yaml
+      - k8s-dev/code-runner-cluster-ip-service.yaml

@@ -1,0 +1,14 @@
+FROM ubuntu:14.04
+
+RUN \
+  sudo apt-get -y update && \
+  sudo apt-get -y install python curl \
+  && curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash - \
+  && sudo apt-get install -y nodejs
+
+WORKDIR  /app
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+
+CMD ["npm", "run", "start"]

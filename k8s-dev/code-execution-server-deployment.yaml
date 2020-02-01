@@ -17,3 +17,8 @@ spec:
           image: sajednahian/code-execution-server
           ports:
             - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: mongodb-cluster-ip-service
+            - name: CODE_RUNNER_IP
+              value: code-runner-cluster-ip-service
