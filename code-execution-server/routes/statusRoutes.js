@@ -1,14 +1,24 @@
 const express = require('express');
-const router = express.Router();
+const axios = require('axios');
 
+const router = express.Router();
 // Models
 const Visited = require('../models/Visted');
 
-router.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Everything looks to be up.'
-  });
+router.get('/', async (req, res) => {
+  try {
+    const result = await axios.post(
+      `http://${process.env.CODE_RUNNER_IP}:5000/`
+    );
+
+    res.json({
+      success: true,
+      message: 'Everything looks to be up.',
+      data: result.data
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.get('/mongodb', async (req, res) => {
