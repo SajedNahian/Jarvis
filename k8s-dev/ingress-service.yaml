@@ -13,7 +13,3 @@ spec:
             backend:
               serviceName: code-execution-server-cluster-ip-service
               servicePort: 5000
-          - path: /runCode/(.+)
-            backend:
-              serviceName: code-runner-cluster-ip-service
-              servicePort: 5000
