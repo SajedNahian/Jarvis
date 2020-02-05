@@ -24,10 +24,19 @@ router.post('/', async (req, res) => {
         runnerCode: runner.code
       }
     );
+    const splitStderr = result.data.stderr.split('\n');
+    console.log(splitStderr);
+    let errorMsg = result.data.stderr;
+    if (language == 'javascript' && splitStderr.length >= 5) {
+      errorMsg = splitStderr[4];
+    } else if (language == 'python' && splitStderr.length >= 4) {
+      errorMsg = splitStderr.slice(3, splitStderr.length).join('\n');
+    }
     const success = result.data.stderr == '';
     res.json({
       success,
-      ...result.data
+      ...result.data,
+      stderr: errorMsg
     });
   } else {
     res.json({
