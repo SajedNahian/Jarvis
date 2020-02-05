@@ -10,6 +10,7 @@ app.use(cors());
 app.use('/status', require('./routes/statusRoutes'));
 app.use('/runCode', require('./routes/codeRunnerRoute'));
 app.use('/problems', require('./routes/problemsRouter'));
+app.use('/registerToken', require('./routes/apnsRoutes'));
 
 // Starting up server
 connectDb();
