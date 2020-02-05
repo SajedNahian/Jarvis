@@ -1,9 +1,24 @@
 const express = require('express');
 const axios = require('axios');
+const rateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
 const Runner = require('../models/Runner');
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  message: {
+    success: false,
+    message: 'Running code too often',
+    stderr: 'Please wait a few minutes before running code again.',
+    stdout: ''
+  }
+});
+
+// Apply rate limiter
+router.use('/', apiLimiter);
 
 router.post('/', async (req, res) => {
   const { language, code, id } = req.body;
