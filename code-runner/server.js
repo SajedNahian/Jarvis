@@ -1,6 +1,6 @@
 const express = require('express');
 const fs = require('fs');
-const { spawn, exec } = require('child_process');
+const { spawn, exec, execSync } = require('child_process');
 
 const app = express();
 
@@ -86,7 +86,6 @@ const prepareNonCompiledLanguage = (
 
 app.post('/', (req, res) => {
   const { runnerCode, code, language } = req.body;
-
   if (isCompiledLanguage(language)) {
     prepareCompiledLanguage(req, res, { runnerCode, code, language }, () =>
       runCode(language, res)

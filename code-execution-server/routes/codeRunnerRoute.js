@@ -28,31 +28,42 @@ router.post('/', async (req, res) => {
     if (!runner)
       return res.json({
         success: false,
-        message: 'Could not find runner file'
+        message: 'Could not find runner file',
+        stdout: '',
+        stderr: ''
       });
 
-    const result = await axios.post(
-      `http://${process.env.CODE_RUNNER_IP}:5000`,
-      {
-        language,
-        code,
-        runnerCode: runner.code
+    try {
+      const result = await axios.post(
+        `http://${process.env.CODE_RUNNER_IP}:5000`,
+        {
+          language,
+          code,
+          runnerCode: runner.code
+        }
+      );
+      const splitStderr = result.data.stderr.split('\n');
+      console.log(splitStderr);
+      let errorMsg = result.data.stderr;
+      if (language == 'javascript' && splitStderr.length >= 5) {
+        errorMsg = splitStderr[4];
+      } else if (language == 'python' && splitStderr.length >= 4) {
+        errorMsg = splitStderr.slice(3, splitStderr.length).join('\n');
       }
-    );
-    const splitStderr = result.data.stderr.split('\n');
-    console.log(splitStderr);
-    let errorMsg = result.data.stderr;
-    if (language == 'javascript' && splitStderr.length >= 5) {
-      errorMsg = splitStderr[4];
-    } else if (language == 'python' && splitStderr.length >= 4) {
-      errorMsg = splitStderr.slice(3, splitStderr.length).join('\n');
+      const success = result.data.stderr == '';
+      res.json({
+        success,
+        ...result.data,
+        stderr: errorMsg
+      });
+    } catch (e) {
+      res.json({
+        success: false,
+        message: 'All servers are currently busy',
+        stderr: 'Please wait a few seconds and run code again',
+        stdout: ''
+      });
     }
-    const success = result.data.stderr == '';
-    res.json({
-      success,
-      ...result.data,
-      stderr: errorMsg
-    });
   } else {
     res.json({
       success: false,
